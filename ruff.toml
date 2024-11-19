@@ -1,0 +1,101 @@
+exclude = [
+    ".direnv",
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "__pycache__",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+line-length = 80
+indent-width = 4
+target-version = "py311"
+
+[lint]
+select = [ "ALL" ]
+ignore = [
+  "ANN003", # Missing type annotation for `**kwargs`
+  "ANN201", # Missing return type annotation for public function
+  "ANN202", # Missing return type annotation for private function
+  "ANN204", # Missing type annotation for special method
+  "ANN206", # Missing return type annotation for class method
+  "ANN401", # Dynamically typed expressions (Any) are disallowed
+  "C901", # Function is too complex
+  "D100", # Missing docstring in public module
+  "D101", # Missing docstring in public class
+  "D102", # Missing docstring in public method
+  "D103", # Missing docstring in public function
+  "D104", # Missing docstring in public package
+  "D105", # Missing docstring in magic method
+  "D107", # Missing docstring in __init__
+  "D202", # No blank lines allowed after function docstring
+  "D211", # no-blank-line-before-class
+  "D212", # multi-line-summary-first-line
+  "E701", # Multiple statements on one line (colon)
+  "EM101", # Exception must not use a string literal
+  "EM102", # Exception must not use an f-string literal
+  "ERA001", # Found commented-out code
+  "F403", # Import * used; unable to detect undefined names
+  "FBT001", # Boolean-typed positional argument in function definition
+  "FBT002", # Boolean default positional argument in function definition
+  "FBT003", # Boolean positional value in function call
+  "FIX002", # Line contains TODO, consider resolving the issue
+  "I001", # Import block is un-sorted or un-formatted
+  "ICN001", # `numpy` should be imported as `np`
+  "PGH003", # Use specific rule codes when ignoring type issues
+  "PLC0414", # Import alias does not rename original package
+  "Q000", # Single quotes found but double quotes preferred
+  "Q001", # Single quote multiline found but double quotes preferred
+  "RUF012", # Mutable class attributes should be annotated with ClassVar
+  "S603", # `subprocess` call: check for execution of untrusted input
+  "TC001", # Move application import <x> into a type-checking block
+  "TC002", # Move third-party import <x> into a type-checking block
+  "TC003", # Move standard library import <x> into a type-checking block
+  "TD002", # Missing author in TODO
+  "TD003", # Missing issue link on the line following this TODO
+  "TD004", # Missing colon in TODO
+  "UP007", # Use `X | Y` for type annotations
+]
+
+fixable = [ "ALL" ]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
+
+[lint.per-file-ignores]
+"__main__.py" = [
+  "PLW0603", # Using the global statement to update `x` is discouraged
+  "T201", # print found
+  "ANN202", # Missing return type annotation for private function
+  "PLR0913", # Too many arguments in function definition
+]
+"tests/**/*.py" = [
+  "S101", # Use of assert detected
+  "PLR2004",
+  "SLF001",
+]

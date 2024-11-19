@@ -1,0 +1,1683 @@
+{
+  "$defs": {
+    "CalibrationConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "rows": {
+          "default": 9,
+          "description": "Number of rows in the calibration grid.",
+          "title": "Rows",
+          "type": "integer"
+        },
+        "columns": {
+          "default": 6,
+          "description": "Number of columns in the calibration grid.",
+          "title": "Columns",
+          "type": "integer"
+        },
+        "square_size": {
+          "default": 45.0,
+          "description": "Size of the chessboard squares in the calibration grid.",
+          "title": "Square Size",
+          "type": "number"
+        },
+        "marker_size": {
+          "default": 25.0,
+          "description": "Size of the markers in the calibration grid.",
+          "title": "Marker Size",
+          "type": "number"
+        },
+        "samples": {
+          "default": 20,
+          "description": "Number of samples to take for calibration.",
+          "title": "Samples",
+          "type": "integer"
+        },
+        "delay": {
+          "default": 3,
+          "description": "Delay between samples for calibration.",
+          "title": "Delay",
+          "type": "number"
+        },
+        "attempts": {
+          "default": 20,
+          "description": "Maximum number of attempts to capture a frame for calibration.",
+          "title": "Attempts",
+          "type": "number"
+        },
+        "markers": {
+          "default": 25,
+          "description": "Minimum number of detected ids to consider a frame for calibration.",
+          "title": "Markers",
+          "type": "integer"
+        },
+        "family": {
+          "default": "4X4",
+          "enum": [
+            "4X4",
+            "5X5",
+            "6X6",
+            "7X7"
+          ],
+          "title": "Family",
+          "type": "string"
+        }
+      },
+      "title": "CalibrationConfig",
+      "type": "object"
+    },
+    "CameraConfig": {
+      "properties": {
+        "http": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HttpOptions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "overlay": {
+          "$ref": "#/$defs/OverlayOptions",
+          "default": {
+            "marker": true,
+            "distance_unit": "mm",
+            "color": "black",
+            "outline": "white",
+            "scale": 3.0,
+            "thickness": 1,
+            "font": "FONT_HERSHEY_SIMPLEX",
+            "line_spacing": 1.5,
+            "line_type": "LINE_AA",
+            "attributes": [
+              "camera",
+              "timestamp",
+              "tag_id",
+              "edge_length",
+              "marker",
+              "distance",
+              "",
+              "message"
+            ]
+          }
+        },
+        "ignore_detections": {
+          "default": false,
+          "title": "Ignore Detections",
+          "type": "boolean"
+        },
+        "save_images": {
+          "default": false,
+          "title": "Save Images",
+          "type": "boolean"
+        },
+        "calibration": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CalibrationConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "data_dir": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Dir"
+        },
+        "address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Address"
+        },
+        "username": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Username"
+        },
+        "password": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Password"
+        },
+        "channel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Channel"
+        },
+        "stream": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stream"
+        },
+        "attributes": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attributes"
+        },
+        "interface": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "dummy": "#/$defs/DummyInterfaceConfig",
+                  "homeassistant": "#/$defs/HomeAssistantInterfaceConfig",
+                  "http": "#/$defs/HttpInterfaceConfig",
+                  "reolink": "#/$defs/ReolinkCameraInterfaceConfig",
+                  "reolink-nvr": "#/$defs/ReolinkNvrInterfaceConfig",
+                  "script": "#/$defs/ScriptInterfaceConfig"
+                },
+                "propertyName": "provider"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DummyInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/HttpInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/HomeAssistantInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/ReolinkCameraInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/ReolinkNvrInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/ScriptInterfaceConfig"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interface"
+        },
+        "exclude_from_ui": {
+          "default": false,
+          "title": "Exclude From Ui",
+          "type": "boolean"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "connections": {
+          "anyOf": [
+            {
+              "items": {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Connections"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "CameraConfig",
+      "type": "object"
+    },
+    "CameraConfigDefaults": {
+      "properties": {
+        "http": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HttpOptions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "overlay": {
+          "$ref": "#/$defs/OverlayOptions",
+          "default": {
+            "marker": true,
+            "distance_unit": "mm",
+            "color": "black",
+            "outline": "white",
+            "scale": 3.0,
+            "thickness": 1,
+            "font": "FONT_HERSHEY_SIMPLEX",
+            "line_spacing": 1.5,
+            "line_type": "LINE_AA",
+            "attributes": [
+              "camera",
+              "timestamp",
+              "tag_id",
+              "edge_length",
+              "marker",
+              "distance",
+              "",
+              "message"
+            ]
+          }
+        },
+        "ignore_detections": {
+          "default": false,
+          "title": "Ignore Detections",
+          "type": "boolean"
+        },
+        "save_images": {
+          "default": false,
+          "title": "Save Images",
+          "type": "boolean"
+        },
+        "calibration": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CalibrationConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "data_dir": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Dir"
+        },
+        "address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Address"
+        },
+        "username": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Username"
+        },
+        "password": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Password"
+        },
+        "channel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Channel"
+        },
+        "stream": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stream"
+        },
+        "attributes": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attributes"
+        },
+        "interface": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "dummy": "#/$defs/DummyInterfaceConfig",
+                  "homeassistant": "#/$defs/HomeAssistantInterfaceConfig",
+                  "http": "#/$defs/HttpInterfaceConfig",
+                  "reolink": "#/$defs/ReolinkCameraInterfaceConfig",
+                  "reolink-nvr": "#/$defs/ReolinkNvrInterfaceConfig",
+                  "script": "#/$defs/ScriptInterfaceConfig"
+                },
+                "propertyName": "provider"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/DummyInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/HttpInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/HomeAssistantInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/ReolinkCameraInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/ReolinkNvrInterfaceConfig"
+                },
+                {
+                  "$ref": "#/$defs/ScriptInterfaceConfig"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interface"
+        },
+        "exclude_from_ui": {
+          "default": false,
+          "title": "Exclude From Ui",
+          "type": "boolean"
+        }
+      },
+      "title": "CameraConfigDefaults",
+      "type": "object"
+    },
+    "DummyInterfaceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "const": "dummy",
+          "default": "dummy",
+          "title": "Provider",
+          "type": "string"
+        },
+        "directory": {
+          "title": "Directory",
+          "type": "string"
+        }
+      },
+      "required": [
+        "directory"
+      ],
+      "title": "DummyInterfaceConfig",
+      "type": "object"
+    },
+    "HomeAssistantInterfaceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "verify_ssl": {
+          "default": true,
+          "title": "Verify Ssl",
+          "type": "boolean"
+        },
+        "follow_redirects": {
+          "default": true,
+          "title": "Follow Redirects",
+          "type": "boolean"
+        },
+        "timeout": {
+          "default": 10,
+          "title": "Timeout",
+          "type": "number"
+        },
+        "provider": {
+          "const": "homeassistant",
+          "default": "homeassistant",
+          "title": "Provider",
+          "type": "string"
+        },
+        "server": {
+          "default": "https://homeassistant.kohlesfamily.org",
+          "title": "Server",
+          "type": "string"
+        },
+        "token": {
+          "default": "**********",
+          "format": "password",
+          "title": "Token",
+          "type": "string",
+          "writeOnly": true
+        }
+      },
+      "title": "HomeAssistantInterfaceConfig",
+      "type": "object"
+    },
+    "HttpInterfaceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "verify_ssl": {
+          "default": true,
+          "title": "Verify Ssl",
+          "type": "boolean"
+        },
+        "follow_redirects": {
+          "default": true,
+          "title": "Follow Redirects",
+          "type": "boolean"
+        },
+        "timeout": {
+          "default": 10,
+          "title": "Timeout",
+          "type": "number"
+        },
+        "provider": {
+          "const": "http",
+          "default": "http",
+          "title": "Provider",
+          "type": "string"
+        },
+        "template": {
+          "$ref": "#/$defs/HttpInterfaceTemplateConfig"
+        },
+        "headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "title": "Headers",
+          "type": "object"
+        },
+        "params": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "title": "Params",
+          "type": "object"
+        }
+      },
+      "required": [
+        "template"
+      ],
+      "title": "HttpInterfaceConfig",
+      "type": "object"
+    },
+    "HttpInterfaceTemplateConfig": {
+      "properties": {
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "post": {
+          "default": false,
+          "title": "Post",
+          "type": "boolean"
+        },
+        "username": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Username"
+        },
+        "password": {
+          "anyOf": [
+            {
+              "format": "password",
+              "type": "string",
+              "writeOnly": true
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Password"
+        },
+        "timeout": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timeout"
+        },
+        "params": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Params"
+        },
+        "headers": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Headers"
+        },
+        "cookies": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cookies"
+        },
+        "follow_redirects": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Follow Redirects"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "title": "HttpInterfaceTemplateConfig",
+      "type": "object"
+    },
+    "HttpOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "url_template": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url Template"
+        },
+        "validate_ssl": {
+          "default": true,
+          "title": "Validate Ssl",
+          "type": "boolean"
+        }
+      },
+      "title": "HttpOptions",
+      "type": "object"
+    },
+    "MQTTBrokerConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "default": "homeassistant.kohlesfamily.org",
+          "title": "Host",
+          "type": "string"
+        },
+        "port": {
+          "default": 1883,
+          "title": "Port",
+          "type": "integer"
+        },
+        "username": {
+          "default": "mqtt",
+          "title": "Username",
+          "type": "string"
+        },
+        "password": {
+          "default": "**********",
+          "format": "password",
+          "title": "Password",
+          "type": "string",
+          "writeOnly": true
+        }
+      },
+      "title": "MQTTBrokerConfig",
+      "type": "object"
+    },
+    "MarkerConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Attributes",
+          "type": "object"
+        },
+        "size": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The size of the marker in millimeters. Used in calculating the\ndistance to the marker.",
+          "title": "Size"
+        },
+        "invert": {
+          "default": false,
+          "title": "Invert",
+          "type": "boolean"
+        },
+        "family": {
+          "default": "4X4",
+          "enum": [
+            "4X4",
+            "5X5",
+            "6X6",
+            "7X7"
+          ],
+          "title": "Family",
+          "type": "string"
+        },
+        "filename": {
+          "default": "marker-$tag_id",
+          "title": "Filename",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": true,
+          "title": "Label"
+        },
+        "rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerRendererConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "stl_rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerSTLConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "png_rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerPNGConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "svg_rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerSVGConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "exclude_from_ui": {
+          "default": false,
+          "title": "Exclude From Ui",
+          "type": "boolean"
+        },
+        "cameras": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Cameras",
+          "type": "array"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "tag_id": {
+          "title": "Tag Id",
+          "type": "integer"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        }
+      },
+      "required": [
+        "id",
+        "tag_id"
+      ],
+      "title": "MarkerConfig",
+      "type": "object"
+    },
+    "MarkerConfigDefaults": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Attributes",
+          "type": "object"
+        },
+        "size": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The size of the marker in millimeters. Used in calculating the\ndistance to the marker.",
+          "title": "Size"
+        },
+        "invert": {
+          "default": false,
+          "title": "Invert",
+          "type": "boolean"
+        },
+        "family": {
+          "default": "4X4",
+          "enum": [
+            "4X4",
+            "5X5",
+            "6X6",
+            "7X7"
+          ],
+          "title": "Family",
+          "type": "string"
+        },
+        "filename": {
+          "default": "marker-$tag_id",
+          "title": "Filename",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": true,
+          "title": "Label"
+        },
+        "rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerRendererConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "stl_rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerSTLConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "png_rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerPNGConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "svg_rendering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarkerSVGConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "exclude_from_ui": {
+          "default": false,
+          "title": "Exclude From Ui",
+          "type": "boolean"
+        },
+        "cameras": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Cameras",
+          "type": "array"
+        }
+      },
+      "title": "MarkerConfigDefaults",
+      "type": "object"
+    },
+    "MarkerPNGConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "default": "marker-$tag_id",
+          "title": "Filename",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": true,
+          "title": "Label"
+        },
+        "size": {
+          "default": 25,
+          "title": "Size",
+          "type": "number"
+        },
+        "directory": {
+          "default": ".",
+          "format": "path",
+          "title": "Directory",
+          "type": "string"
+        },
+        "dpi": {
+          "default": 72,
+          "title": "Dpi",
+          "type": "integer"
+        }
+      },
+      "title": "MarkerPNGConfig",
+      "type": "object"
+    },
+    "MarkerRendererConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "default": "marker-$tag_id",
+          "title": "Filename",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": true,
+          "title": "Label"
+        },
+        "size": {
+          "default": 25,
+          "title": "Size",
+          "type": "number"
+        },
+        "directory": {
+          "default": ".",
+          "format": "path",
+          "title": "Directory",
+          "type": "string"
+        }
+      },
+      "title": "MarkerRendererConfig",
+      "type": "object"
+    },
+    "MarkerSTLConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "default": "marker-$tag_id",
+          "title": "Filename",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": true,
+          "title": "Label"
+        },
+        "size": {
+          "default": 25,
+          "title": "Size",
+          "type": "number"
+        },
+        "directory": {
+          "default": ".",
+          "format": "path",
+          "title": "Directory",
+          "type": "string"
+        },
+        "grid_thickness": {
+          "default": 5.0,
+          "title": "Grid Thickness",
+          "type": "number"
+        },
+        "base_thickness": {
+          "default": 1.0,
+          "title": "Base Thickness",
+          "type": "number"
+        },
+        "hole_diameter": {
+          "default": 0,
+          "title": "Hole Diameter",
+          "type": "number"
+        },
+        "hole_depth": {
+          "default": 0,
+          "title": "Hole Depth",
+          "type": "number"
+        },
+        "hole_offset": {
+          "default": 10,
+          "title": "Hole Offset",
+          "type": "number"
+        },
+        "spacer_height": {
+          "default": 0,
+          "title": "Spacer Height",
+          "type": "number"
+        },
+        "spacer_diameter": {
+          "default": 20,
+          "title": "Spacer Diameter",
+          "type": "number"
+        },
+        "label_size": {
+          "default": 0.75,
+          "description": "Label size (as a percentage of the total marker size).",
+          "title": "Label Size",
+          "type": "number"
+        },
+        "label_font": {
+          "default": "Helvetica:style=Bold",
+          "title": "Label Font",
+          "type": "string"
+        },
+        "label_depth": {
+          "default": 0,
+          "title": "Label Depth",
+          "type": "number"
+        },
+        "drill_guide": {
+          "default": true,
+          "title": "Drill Guide",
+          "type": "boolean"
+        },
+        "scad_only": {
+          "default": false,
+          "title": "Scad Only",
+          "type": "boolean"
+        },
+        "keep_scad": {
+          "default": false,
+          "title": "Keep Scad",
+          "type": "boolean"
+        }
+      },
+      "title": "MarkerSTLConfig",
+      "type": "object"
+    },
+    "MarkerSVGConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "default": "marker-$tag_id",
+          "title": "Filename",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": true,
+          "title": "Label"
+        },
+        "size": {
+          "default": 25,
+          "title": "Size",
+          "type": "number"
+        },
+        "directory": {
+          "default": ".",
+          "format": "path",
+          "title": "Directory",
+          "type": "string"
+        }
+      },
+      "title": "MarkerSVGConfig",
+      "type": "object"
+    },
+    "OverlayOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "marker": {
+          "default": true,
+          "title": "Marker",
+          "type": "boolean"
+        },
+        "distance_unit": {
+          "default": "mm",
+          "enum": [
+            "mm",
+            "cm",
+            "m",
+            "in",
+            "ft"
+          ],
+          "title": "Distance Unit",
+          "type": "string"
+        },
+        "color": {
+          "default": "black",
+          "title": "Color",
+          "type": "string"
+        },
+        "outline": {
+          "default": "white",
+          "title": "Outline",
+          "type": "string"
+        },
+        "scale": {
+          "default": 3,
+          "title": "Scale",
+          "type": "number"
+        },
+        "thickness": {
+          "default": 1,
+          "title": "Thickness",
+          "type": "integer"
+        },
+        "font": {
+          "default": "FONT_HERSHEY_SIMPLEX",
+          "title": "Font",
+          "type": "string"
+        },
+        "line_spacing": {
+          "default": 1.5,
+          "title": "Line Spacing",
+          "type": "number"
+        },
+        "line_type": {
+          "default": "LINE_AA",
+          "title": "Line Type",
+          "type": "string"
+        },
+        "attributes": {
+          "default": [
+            "camera",
+            "timestamp",
+            "tag_id",
+            "edge_length",
+            "marker",
+            "distance",
+            "",
+            "message"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "type": "array"
+        }
+      },
+      "title": "OverlayOptions",
+      "type": "object"
+    },
+    "ReolinkCameraInterfaceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "verify_ssl": {
+          "default": false,
+          "title": "Verify Ssl",
+          "type": "boolean"
+        },
+        "follow_redirects": {
+          "default": true,
+          "title": "Follow Redirects",
+          "type": "boolean"
+        },
+        "timeout": {
+          "default": 10,
+          "title": "Timeout",
+          "type": "number"
+        },
+        "address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Address"
+        },
+        "username": {
+          "default": "admin",
+          "title": "Username",
+          "type": "string"
+        },
+        "password": {
+          "default": "",
+          "format": "password",
+          "title": "Password",
+          "type": "string",
+          "writeOnly": true
+        },
+        "use_ssl": {
+          "default": false,
+          "title": "Use Ssl",
+          "type": "boolean"
+        },
+        "provider": {
+          "const": "reolink",
+          "default": "reolink",
+          "title": "Provider",
+          "type": "string"
+        }
+      },
+      "title": "ReolinkCameraInterfaceConfig",
+      "type": "object"
+    },
+    "ReolinkNvrInterfaceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "verify_ssl": {
+          "default": false,
+          "title": "Verify Ssl",
+          "type": "boolean"
+        },
+        "follow_redirects": {
+          "default": true,
+          "title": "Follow Redirects",
+          "type": "boolean"
+        },
+        "timeout": {
+          "default": 10,
+          "title": "Timeout",
+          "type": "number"
+        },
+        "address": {
+          "title": "Address",
+          "type": "string"
+        },
+        "username": {
+          "default": "admin",
+          "title": "Username",
+          "type": "string"
+        },
+        "password": {
+          "default": "",
+          "format": "password",
+          "title": "Password",
+          "type": "string",
+          "writeOnly": true
+        },
+        "use_ssl": {
+          "default": false,
+          "title": "Use Ssl",
+          "type": "boolean"
+        },
+        "provider": {
+          "const": "reolink-nvr",
+          "default": "reolink-nvr",
+          "title": "Provider",
+          "type": "string"
+        }
+      },
+      "required": [
+        "address"
+      ],
+      "title": "ReolinkNvrInterfaceConfig",
+      "type": "object"
+    },
+    "ScriptInterfaceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "const": "script",
+          "default": "script",
+          "title": "Provider",
+          "type": "string"
+        },
+        "command": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Command"
+        }
+      },
+      "required": [
+        "command"
+      ],
+      "title": "ScriptInterfaceConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "marker_defaults": {
+      "$ref": "#/$defs/MarkerConfigDefaults",
+      "default": {
+        "attributes": {},
+        "size": null,
+        "invert": false,
+        "family": "4X4",
+        "filename": "marker-$tag_id",
+        "label": true,
+        "rendering": null,
+        "stl_rendering": null,
+        "png_rendering": null,
+        "svg_rendering": null,
+        "exclude_from_ui": false,
+        "cameras": []
+      }
+    },
+    "camera_defaults": {
+      "$ref": "#/$defs/CameraConfigDefaults",
+      "default": {
+        "http": null,
+        "overlay": {
+          "attributes": [
+            "camera",
+            "timestamp",
+            "tag_id",
+            "edge_length",
+            "marker",
+            "distance",
+            "",
+            "message"
+          ],
+          "color": "black",
+          "distance_unit": "mm",
+          "font": "FONT_HERSHEY_SIMPLEX",
+          "line_spacing": 1.5,
+          "line_type": "LINE_AA",
+          "marker": true,
+          "outline": "white",
+          "scale": 3.0,
+          "thickness": 1
+        },
+        "ignore_detections": false,
+        "save_images": false,
+        "calibration": null,
+        "data_dir": null,
+        "address": null,
+        "username": null,
+        "password": null,
+        "channel": null,
+        "stream": null,
+        "attributes": null,
+        "interface": null,
+        "exclude_from_ui": false
+      }
+    },
+    "markers": {
+      "items": {
+        "$ref": "#/$defs/MarkerConfig"
+      },
+      "title": "Markers",
+      "type": "array"
+    },
+    "cameras": {
+      "items": {
+        "$ref": "#/$defs/CameraConfig"
+      },
+      "title": "Cameras",
+      "type": "array"
+    },
+    "interfaces": {
+      "additionalProperties": {
+        "discriminator": {
+          "mapping": {
+            "dummy": "#/$defs/DummyInterfaceConfig",
+            "homeassistant": "#/$defs/HomeAssistantInterfaceConfig",
+            "http": "#/$defs/HttpInterfaceConfig",
+            "reolink": "#/$defs/ReolinkCameraInterfaceConfig",
+            "reolink-nvr": "#/$defs/ReolinkNvrInterfaceConfig",
+            "script": "#/$defs/ScriptInterfaceConfig"
+          },
+          "propertyName": "provider"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/DummyInterfaceConfig"
+          },
+          {
+            "$ref": "#/$defs/HttpInterfaceConfig"
+          },
+          {
+            "$ref": "#/$defs/HomeAssistantInterfaceConfig"
+          },
+          {
+            "$ref": "#/$defs/ReolinkCameraInterfaceConfig"
+          },
+          {
+            "$ref": "#/$defs/ReolinkNvrInterfaceConfig"
+          },
+          {
+            "$ref": "#/$defs/ScriptInterfaceConfig"
+          }
+        ]
+      },
+      "default": {},
+      "title": "Interfaces",
+      "type": "object"
+    },
+    "broker": {
+      "$ref": "#/$defs/MQTTBrokerConfig",
+      "default": {
+        "host": "homeassistant.kohlesfamily.org",
+        "port": 1883,
+        "username": "mqtt",
+        "password": "**********"
+      }
+    },
+    "update_interval": {
+      "default": 60,
+      "title": "Update Interval",
+      "type": "number"
+    },
+    "camera_data_dir": {
+      "default": "camera-data",
+      "format": "path",
+      "title": "Camera Data Dir",
+      "type": "string"
+    }
+  },
+  "required": [
+    "markers",
+    "cameras"
+  ],
+  "title": "Config",
+  "type": "object"
+}

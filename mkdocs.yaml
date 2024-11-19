@@ -1,0 +1,97 @@
+site_name: My Docs
+site_url: https://jasonk.github.io/tag-sensor/
+repo_url: https://github.com/jasonk/tag-sensor/
+
+nav:
+  - index.md
+  - configuration.md
+  - cameras.md
+  # - example-config.md
+  - interfaces.md
+  - making-markers.md
+  - markers.md
+  - rendering.md
+#  - Code Reference: reference/
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.path
+    - content.code.copy
+
+  palette:
+
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - privacy:
+  - search:
+# - gen-files:
+#     scripts:
+#       - scripts/gen_ref_pages.py
+# - literate-nav:
+#     nav_file: SUMMARY.md
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            extensions:
+            - griffe_pydantic:
+                schema: true
+  - section-index:
+
+markdown_extensions:
+  - abbr:
+  - admonition:
+  - attr_list:
+  - def_list:
+  - footnotes:
+  - markdown_include.include:
+      base_path: docs
+  - md_in_html:
+  - pymdownx.blocks.caption:
+  - pymdownx.details:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite:
+  - pymdownx.snippets:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - tables:
+  - toc:
+      permalink: true
+      # baselevel: 2
+      # separator: "_"

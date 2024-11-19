@@ -1,0 +1,20 @@
+{% from 'macros.html' import properties_table %}
+
+{% include 'header.html' %}
+
+<h1>Marker {{ marker.id }}</h1>
+
+{% if marker.has_detection %}
+  <img src="/marker/{{ marker.id }}/annotated.png" />
+{% elif ( marker.cameras | length ) == 1 %}
+  <img src="/marker/{{ marker.id }}/original.png" />
+{% elif ( marker.cameras | length ) > 1 %}
+  {% for camera in marker.cameras %}
+    <img src="/camera/{{ camera }}/annotated.png" />
+  {% endfor %}
+{% endif %}
+
+{{ properties_table( marker.properties ) }}
+{{ properties_table( marker.attributes ) }}
+
+{% include 'footer.html' %}

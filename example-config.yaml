@@ -1,0 +1,207 @@
+# yaml-language-server: $schema=./tag-sensor.schema.json
+---
+
+### Cameras ###
+
+# The minimum config needed for a camera is just an `id`, to give the
+# interface provider a way to identify the camera that it should get
+# a frame from.
+cameras:
+  - id: 'bins_camera'
+    connections:
+      - [ 'mac', 'ec:71:db:97:d7:50' ]
+
+    overlay:
+      scale: 0.5
+    entity_id: 'camera.bins_fluent'
+#   interface:
+#     provider: 'reolink'
+#     address: '192.168.4.202'
+#     password: '{{ env.REOLINK_NVR_PASS }}'
+#     use_ssl: true
+#     verify_ssl: false
+  - id: 'garage_camera'
+    entity_id: 'camera.garage_fluent'
+  - id: 'driveway_camera'
+    channel: 'Driveway'
+    entity_id: 'camera.driveway_fluent'
+  - id: 'test_camera'
+    interface: 'bench_camera'
+  - id: 'calibration_camera'
+    save_images: true
+    ignore_detections: true
+    exclude_from_ui: true
+    interface: 'bench_camera'
+    calibration:
+      samples: 10
+      delay: 0.01
+
+markers:
+  - id: 'recycling_bin_parked'
+    tag_id: 21
+    name: 'Recycling Bin Parked'
+    size: 150
+    cameras: [ 'bins_camera' ]
+  - id: 'trash_bin_parked'
+    tag_id: 22
+    name: 'Trash Bin Parked'
+    size: 150
+    cameras: [ 'bins_camera' ]
+  - id: 'compost_bin_parked'
+    tag_id: 23
+    name: 'Compost Bin Parked'
+    size: 150
+    cameras: [ 'bins_camera' ]
+  - id: 'garage_door_open'
+    name: 'Garage Door is Open'
+    tag_id: 30
+    size: 186
+    invert: true
+    cameras: [ 'garage_camera' ]
+  - id: 'test_tag'
+    name: 'Test Tag'
+    tag_id: 40
+    size: 100
+  - id: 'van_in_garage'
+    name: 'Van in Garage'
+    tag_id: 70
+    size: 186
+    invert: true
+    cameras: [ 'garage_camera' ]
+  - id: 'car_in_garage'
+    name: 'Car in Garage'
+    tag_id: 71
+    size: 186
+    invert: true
+    cameras: [ 'garage_camera' ]
+
+marker_defaults:
+  family: '4X4'
+  rendering:
+    # The size of each individual square in the grid
+    size: 25
+    # The format to use for labels, you can use basically any value
+    # from the marker configuration as a variable.
+    label: '$tag_id - $name'
+
+  # Default values for .stl rendering options. Note that all of the
+  # values that refer to dimensions are in millimeters.
+  stl_rendering:
+
+    # The thickness of the upper grid portion of the marker. This is
+    # how thick the black and white part will be.
+    grid_thickness: 4.0
+    # The thickness of the lower base of the marker. If this is set to
+    # a value greater than 0, then an all-white base layer of this
+    # thickness will be included underneath the black and white part
+    # of the grid.
+    base_thickness: 4.0
+
+    ### Mounting Holes ###
+
+    # If you want mounting holes to be included, then set this to the
+    # diameter of the holes. If you don't want any holes then just set
+    # it to 0. The default is 0 (no holes).
+    hole_diameter: 5.8
+
+    # How deep the mounting holes should be (measured from the back of
+    # the marker). I set this to a couple of millimeters less than the
+    # total thickness of the marker and set `hole_diameter` to 5.8 so
+    # that I can use M4 heat-set inserts and not have any visible
+    # screws.  If you want the holes to go all the way through this
+    # should be set to a value larger than the total thickness of the
+    # marker, or OpenSCAD can sometimes do weird things when the hole
+    # and the surface are coplanar. The default is 0 (no holes).
+    hole_depth: 5
+
+    # The offset from the edge of the marker to the center of the hole.
+    # The default is 10.
+    hole_offset: 10
+
+    ### Spacers ###
+
+    # If you will be mounting markers to something that isn't actually
+    # flat, then you can add spacers at the hole positions to
+    # accomodate that. The spacers are cylinders that are centered on
+    # the same point as the hole centers.
+
+    # If you set this to a value greater than 0 then spacers will be
+    # included at each corner. If you don't want spacers then set it to
+    # 0. The default is 0 (no spacers).
+    spacer_height: 5
+
+    # If spacers are being included then this is their diameter
+    # The default is 20.
+    spacer_diameter: 20
+
+    ### Labels ###
+
+    # Setting label_depth to a non-zero value will add a label to the
+    # back of the marker. By default the label will be "engraved" into
+    # the back of the marker, but if you set this to a negative value
+    # then it will be raised instead (if it's raised you probably want
+    # to make sure you have spacers or mounting it will be a challenge).
+
+    # How deep the label should be engraved into the marker. If this
+    # is negative then the label will be raised instead of engraved.
+    # The default is 0 (no labels).
+    label_depth: 1
+
+    # The size of the label text (as a percentage of the total size of
+    # the marker).
+    label_size: 0.75
+
+    # You can change the label font to any label that will work with
+    # the version of OpenSCAD that you are using. The default is
+    # `Helvetica:style=Bold`.
+    label_font: 'Helvetica:style=Bold'
+
+    ### Miscellaneous ###
+
+    # If you turn this on then rendering STL's will also render
+    # a printable drill guide that you can use to get the mounting
+    # holes drilled in the right spot every time.
+    drill_guide: true
+
+    # This is useful when developing and working on the SolidPython2
+    # code, you can disable .stl rendering to speed up the development
+    # cycle when you just need to see how OpenSCAD is going to render
+    # the model and don't actually need .stl files yet. The default is
+    # true. I leave this set to false when running the tests to speed
+    # them up (and so that we don't have to have OpenSCAD for the test
+    # suite).
+    scad_only: true
+    # Turn this on to keep the .scad files instead of deleting them.
+    keep_scad: true
+
+camera_defaults:
+  interface: 'homeassistant'
+
+interfaces:
+  dummy:
+    provider: 'dummy'
+    directory: './tests/images'
+  homeassistant:
+    provider: 'homeassistant'
+    server: '{{ env.HASS_SERVER }}'
+    token: '{{ env.HASS_TOKEN }}'
+# nvr:
+#   provider: 'reolink-nvr'
+#   address: '{{ env.REOLINK_NVR_HOST }}'
+#   username: '{{ env.REOLINK_NVR_USER }}'
+#   password: '{{ env.REOLINK_NVR_PASS }}'
+#   use_ssl: true
+#   verify_ssl: false
+  bench_camera:
+    provider: 'reolink'
+    address: '192.168.1.198'
+    password: ''
+    use_ssl: true
+    verify_ssl: false
+
+camera_data_dir: './tests/camera-data'
+
+broker:
+  host: '{{ env.MQTT_HOST }}'
+  username: '{{ env.MQTT_USERNAME }}'
+  password: '{{ env.MQTT_PASSWORD }}'

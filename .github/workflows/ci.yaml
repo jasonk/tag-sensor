@@ -1,0 +1,36 @@
+name: ci
+on:
+  push:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout repository'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Install uv'
+        uses: 'astral-sh/setup-uv@v5'
+        with:
+          version: '0.5.13'
+          enable-cache: true
+
+      - uses: 'actions/setup-python@v5'
+        with:
+          python-version-file: '.python-version'
+
+      - name: 'Install the project'
+        run: uv sync --all-extras --dev
+
+      - name: Run tests
+        run: >-
+          uv run pytest
+          --cov-report term-missing
+          --cov-report html
+          --cov-report json
+          --cov-report lcov
+          --cov=tag_sensor
+          tests
+
+      - name: 'Deploy Docs'
+        run: mkdocs gh-deploy --force

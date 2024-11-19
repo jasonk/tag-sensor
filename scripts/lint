@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+set +e
+# ruff format .
+# isort src/**/*.py
+bandit -r src
+ruff check src # --fix
+pylint src/**/*.py

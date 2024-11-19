@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tag Sensor</title>
+  <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <aside>
+      <a href="/">Dashboard</a>
+      <b>Markers</b>
+      <ul>
+        {% for marker in markers %}
+          <li>
+            <a href="/marker/{{marker.id}}">
+              {{ marker.config.name or marker.id }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <b>Cameras</b>
+      <ul>
+        {% for camera in cameras %}
+          <li>
+            <a href="/camera/{{camera.id}}">
+              {{ camera.id }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+    <main>

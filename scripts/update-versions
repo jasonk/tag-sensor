@@ -1,0 +1,17 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+version="$1"
+
+# version="$(grep -w version ../pyproject.toml | head -1 | cut -d\" -f2)"
+
+tuple="$(tr . , <<< "$version")"
+printf -v sub1 '__version__ = version = "%s"' "$version"
+printf -v sub2 '__version_tuple__ = version_tuple = (%s)' "$tuple"
+
+sed -e "s/^version = .*/version = \"$version\"/" -i.bak pyproject.toml
+sed \
+  -e "s/__version__ = .*/$sub1/" \
+  -e "s/__version_tuple__ = .*/$sub2/" \
+  -i.bak src/tag_sensor/_version.py

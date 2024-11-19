@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+testmon=false
+tests=()
+
+while (( $# )); do
+  if [ -f "$1" ]; then
+    tests+=("$1")
+    shift 1
+  fi
+  case "$1" in
+    --testmon) testmon=true ; shift 1 ; break ;;
+    *) echo "Unknown option: $1" 1>&2 ; exit 1 ;;
+  esac
+done
+
+if [ "${#tests[@]}" -eq 0 ]; then
+  tests=( './tests' )
+fi
+if $testmon; then
+  exec pytest --testmon \
+    --cov-report term-missing \
+    --cov=tag_sensor \
+    "${tests[@]}"
+else
+  exec pytest "$@" \
+    --cov-report term-missing \
+    --cov-report html \
+    --cov-report json \
+    --cov-report lcov \
+    --cov=tag_sensor \
+    "${tests[@]}"
+fi

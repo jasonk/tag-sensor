@@ -1,0 +1,18 @@
+{% from 'macros.html' import properties_table %}
+
+{% include 'header.html' %}
+
+<h1>Camera {{ camera.id }}</h1>
+
+<img src="/camera/{{ camera.id }}/annotated.png" />
+
+{{ properties_table( camera.properties ) }}
+{{ properties_table( camera.attributes ) }}
+
+{% if camera.calibrating %}
+  <p>Calibrating... Need {{ camera.calibrator.need }} more images.</p>
+{% elif camera.can_calibrate %}
+  <a href="/camera/{{ camera.id }}/calibrate">Calibrate</a>
+{% endif %}
+
+{% include 'footer.html' %}

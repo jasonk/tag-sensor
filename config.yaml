@@ -1,0 +1,38 @@
+name: Tag Sensor
+version: 0.1.0-pre.57
+slug: tag_sensor
+description: Home Assistant Tag Sensor
+url: https://github.com/jasonk/homeassistant-addons
+arch: [ armhf, armv7, aarch64, amd64 ]
+startup: application
+boot: auto
+init: false
+webui: http://[HOST]:[PORT:8000]/dashboard
+watchdog: http://[HOST]:[PORT:8000]/health
+breaking_versions: []
+# Access API with http://supervisor/core/api
+homeassistant_api: true
+ingress: true
+services:
+  - mqtt:need
+
+map:
+  - type: share
+    read_only: False
+  - type: ssl
+  - type: homeassistant_config
+    read_only: False
+#   path: /custom/config/path
+  - type: addon_config
+    read_only: False
+#   path: /custom/config/path
+# - type: addons
+# - type: media
+# - type: all_addon_configs
+# - type: data
+
+ports:
+  8000/tcp: 8000
+
+ports_description:
+  8000/tcp: Tag Sensor UI

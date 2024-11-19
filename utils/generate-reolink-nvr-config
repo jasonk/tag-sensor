@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+import os
+import re
+import atexit
+import yaml
+from httpx import Client
+from typing import Literal
+from typer import Typer
+from rich.pretty import pprint
+
+app = Typer()
+
+@app.command()
+def generate(
+    address: str = os.getenv('REOLINK_NVR_ADDR', ''),
+    username: str = os.getenv('REOLINK_NVR_USER', 'admin'),
+    password: str = os.getenv('REOLINK_NVR_PASS', ''),
+):
+    client = Client(
+        verify = False,
+        base_url = address,
+    )
+    token = 'null'
+
+    def do_cmd( cmd: str, *params, action: Literal[0,1] = 0, **param ):
+        if params:
+            multi = True
+            json = [
+                { 'cmd': cmd, 'action': action, 'param': p }
+                for p in params
+            ]
+        else:
+            multi = False
+            json = [ { 'cmd': cmd, 'action': action, 'param': param } ]
+        res = client.post(
+            '/cgi-bin/api.cgi',
+            params = { 'cmd': cmd, 'token': token },
+            json = json,
+        )
+        data = res.json()
+        pprint( data )
+        if multi: return data
+        return data[0]
+
+    token = do_cmd( 'Login', User = {
+        'userName': username, 'password': password,
+    } )['value']['Token']['name']
+
+    def logout():
+        if token == 'null': return
+        do_cmd( 'Logout' )
+    atexit.register( logout )
+
+    channels = do_cmd( 'GetChannelStatus' )['value']['status']
+    for channel in channels:
+        channel['id'] = re.sub( r'\W+', '_', channel['name'] )
+
+    enc_info = do_cmd( 'GetEnc', *(
+        { 'channel': c['channel'] }
+        for c in channels
+        if c['online']
+    ) )
+    enc_info = [ e['value']['Enc'] for e in enc_info ]
+    for enc in enc_info:
+        channel = enc.get( 'channel' )
+        stream = enc.get( 'mainStream' )
+        channels[channel].update( {
+            'height': stream['height'],
+            'width': stream['width'],
+        } )
+
+    config = {
+        'interface': {
+            'provider': 'http',
+            'url_template': ''.join( [
+                f'{address}/cgi-bin/api.cgi?cmd=Snap',
+                f'&user={username}&password={password}',
+                '&channel=${channel}&height=${height}&width=${width}',
+            ] ),
+        },
+        'cameras': [ c for c in channels if c.pop( 'online' ) ],
+    }
+    print( yaml.safe_dump( config ) )
+
+if __name__ == '__main__':
+    app()

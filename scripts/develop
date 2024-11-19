@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+#if command -v mosquitto &> /dev/null; then
+#
+#  if [ ! -f mosquitto.conf ]; then
+#    {
+#      echo 'persistence false'
+#      echo 'log_dest stdout'
+#      echo 'connection_messages true'
+#      echo 'log_timestamp false'
+#      echo 'password_file mosquitto.passwd'
+#    } > mosquitto.conf
+#  fi
+#
+#  if [ ! -f mosquitto.passwd ]; then
+#    mosquitto_passwd -c -b mosquitto.passwd test test
+#  fi
+#
+#  export MQTT_HOST='127.0.0.1'
+#  export MQTT_USERNAME='test'
+#  export MQTT_PASSWORD='test'
+#
+#  ( ulimit -n 1024 && mosquitto -c mosquitto.conf ) &
+#fi
+
+uv run fastapi dev ./src/tag_sensor/server/application.py
+
+#wait
