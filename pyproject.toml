@@ -178,7 +178,7 @@ skip_covered = true
 
 [dependency-groups]
 dev = [
-    "bandit>=1.8.0",
+    "bandit>=1.9.4",
     "devtools>=0.12.2",
     "griffe-pydantic>=1.1.0",
     "hatch>=1.14.0",
